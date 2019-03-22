@@ -4,7 +4,7 @@ import de.bezier.guido.*;
 //Declare and initialize NUM_ROWS and NUM_COLS = 20
 int NUM_ROWS = 20;
 int NUM_COLS = 20;
-int NUM_BOMB = 80;
+int NUM_BOMB = 2;
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs = new ArrayList <MSButton>(); //ArrayList of just the minesweeper buttons that are mined
  
@@ -12,7 +12,6 @@ void setup ()
 {
     size(400, 400);
     textAlign(CENTER,CENTER);
-    
     // make the manager
     Interactive.make( this );
     
@@ -51,16 +50,49 @@ public void draw ()
 public boolean isWon()
 {
     //your code here
-
+    int countMark = 0;
+    int countClick = 0;
+    for(int n = 0; n < NUM_ROWS; n++)
+    {
+        for(int m = 0; m < NUM_COLS; m++)
+        {
+            if(buttons[n][m].isMarked())
+            {
+                countMark++;
+            }
+            else if(buttons[n][m].isClicked())
+            {
+                countClick++;
+            }
+        }
+    }
+    int amountBomb = 0;
+    for(int boom = 0; boom < bombs.size(); boom++)
+    {
+        if((bombs.get(boom)).isMarked())
+        {
+            amountBomb++;
+        }
+    }
+    if(amountBomb == bombs.size() && countClick + countMark == NUM_COLS*NUM_ROWS && amountBomb == countMark && bombs.size() == (NUM_ROWS*NUM_COLS)-countClick)
+    {
+        return true;
+    }
     return false;
 }
 public void displayLosingMessage()
 {
     //your code here
+    buttons[0][0].setLabel("L");
+    buttons[0][1].setLabel("O");
+    buttons[0][2].setLabel("S");
+    buttons[0][3].setLabel("E");
 }
 public void displayWinningMessage()
 {
-    //your code here
+    buttons[0][0].setLabel("W");
+    buttons[0][1].setLabel("I");
+    buttons[0][2].setLabel("N");
 }
 
 public class MSButton
@@ -128,15 +160,15 @@ public class MSButton
     public void draw () 
     {    
         if (marked)
-            fill(0);
+            fill(0, 51, 153);
         else if( clicked && bombs.contains(this) ) 
-            fill(255,0,0);
+            fill(255, 102, 255);
         else if(clicked)
-            fill( 200 );
+            fill(255, 204, 255);
         else 
-            fill( 100 );
+            fill(0, 170, 255);
 
-        rect(x, y, width, height);
+        rect(x, y, width, height,10);
         fill(0);
         text(label,x+width/2,y+height/2);
     }
