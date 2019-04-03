@@ -24,7 +24,7 @@ void setup ()
             buttons[rrr][ccc] = new MSButton(rrr,ccc);
         }
     }
-    for(int sb = 0; sb < (NUM_COLS*NUM_ROWS)/40; sb++)
+    for(int sb = 0; sb < (NUM_COLS*NUM_ROWS)/10; sb++)
     {
         setBombs();
         bombNum++;
