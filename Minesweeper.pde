@@ -2,9 +2,9 @@
 
 import de.bezier.guido.*;
 //Declare and initialize NUM_ROWS and NUM_COLS = 20
-int NUM_ROWS = 20;
-int NUM_COLS = 20;
-int NUM_BOMB = 80;
+public final static int NUM_ROWS = 20;
+public final static int NUM_COLS = 20;
+int bombNum = 0;
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs = new ArrayList <MSButton>(); //ArrayList of just the minesweeper buttons that are mined
  
@@ -24,9 +24,10 @@ void setup ()
             buttons[rrr][ccc] = new MSButton(rrr,ccc);
         }
     }
-    for(int sb = 0; sb < NUM_BOMB; sb++)
+    for(int sb = 0; sb < (NUM_COLS*NUM_ROWS)/40; sb++)
     {
         setBombs();
+        bombNum++;
     }
 }
 public void setBombs()
@@ -34,10 +35,9 @@ public void setBombs()
     //your code
     int ranrow = (int)(Math.random()*NUM_ROWS);
     int rancol = (int)(Math.random()*NUM_COLS);
-    if(bombs.contains(buttons[ranrow][rancol]) == false)
+    if(!bombs.contains(buttons[ranrow][rancol]))
     {
         bombs.add(buttons[ranrow][rancol]);
-        System.out.println(ranrow + ", " + rancol);
     }
 }
 
@@ -66,15 +66,7 @@ public boolean isWon()
             }
         }
     }
-    int amountBomb = 0;
-    for(int boom = 0; boom < bombs.size(); boom++)
-    {
-        if((bombs.get(boom)).isMarked())
-        {
-            amountBomb++;
-        }
-    }
-    if(amountBomb == bombs.size() && countClick + countMark == NUM_COLS*NUM_ROWS && amountBomb == countMark && bombs.size() == (NUM_ROWS*NUM_COLS)-countClick)
+    if(bombNum == bombs.size() && countClick + countMark == NUM_COLS*NUM_ROWS && bombNum == countMark && bombs.size() == (NUM_ROWS*NUM_COLS)-countClick)
     {
         return true;
     }
@@ -129,7 +121,16 @@ public class MSButton
         clicked = true;
         if(mouseButton == RIGHT)
         {
-            marked = !marked;
+            if(marked==true)
+            {
+                marked = false;
+                clicked = false;
+            }
+            else if(marked==false)
+            {
+                marked = true;
+                clicked = false;
+            }
         }
         if(mouseButton == LEFT)
         {
@@ -168,7 +169,7 @@ public class MSButton
         else 
             fill(0, 170, 255);
 
-        rect(x, y, width, height,10);
+        rect(x, y, width, height,20);
         fill(0);
         text(label,x+width/2,y+height/2);
     }
