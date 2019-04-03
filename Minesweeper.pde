@@ -27,7 +27,6 @@ void setup ()
     for(int sb = 0; sb < (NUM_COLS*NUM_ROWS)/10; sb++)
     {
         setBombs();
-        bombNum++;
     }
 }
 public void setBombs()
@@ -38,6 +37,7 @@ public void setBombs()
     if(!bombs.contains(buttons[ranrow][rancol]))
     {
         bombs.add(buttons[ranrow][rancol]);
+        bombNum++;
     }
 }
 
